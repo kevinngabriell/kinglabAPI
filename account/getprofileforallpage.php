@@ -8,7 +8,7 @@ require_once('../../connection/connection.php');
 function fetchData($employeeId) {
     global $connect;
 
-    $stmt = $connect->prepare("SELECT A2.company_name, LEFT(A2.company_address, 15) AS company_address, LEFT(A1.employee_name, 15) AS employee_name, A3.employee_email, A4.position_name
+    $stmt = $connect->prepare("SELECT A2.company_name, A2.company_address, LEFT(A1.employee_name, 15) AS employee_name, A3.employee_email, A4.position_name
         FROM employee A1
         JOIN company A2 ON A1.company_id = A2.company_id
         JOIN employee_contact_details_db A3 ON A1.id = A3.id
@@ -23,7 +23,7 @@ function fetchData($employeeId) {
     return $data;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $employeeId = $_POST['employee_id'];
 
     $resultData = fetchData($employeeId);
