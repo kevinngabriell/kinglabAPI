@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $employeeId = $_POST['employee_id'];
     $spvId = $_POST['spv_id'];
 
-    $updated_spv_query = "UPDATE employee SET employee_spv = '$spvId' WHERE employee_id = '$employeeId';";
+    $updated_spv_query = "UPDATE employee SET employee_spv = '$spvId' WHERE id = '$employeeId';";
 
     if ($connect->query($updated_spv_query) === TRUE) {
         $response = array(
