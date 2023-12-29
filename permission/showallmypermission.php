@@ -8,7 +8,7 @@ require_once('../../connection/connection.php');
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $id = $_GET['id'];
 
-    $query = "SELECT A1.id_permission, A2.permission_type_name, A3.employee_name ,A1.permission_date, A4.permission_status_name
+    $query = "SELECT A1.id_permission, A2.permission_type_name, A3.employee_name ,A1.permission_date, A4.permission_status_name, A1.start_cuti
     FROM permission_log A1
     JOIN permission_type_master A2 ON A1.permission_type = A2.id_permission_type
     JOIN employee A3 ON A1.employee_id = A3.id
