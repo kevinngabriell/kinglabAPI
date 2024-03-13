@@ -42,13 +42,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
         } else {
             http_response_code(404);
-        echo json_encode(
-            array(
-                "StatusCode" => 400,
-                'Status' => 'Error',
-                "message" => "Error: Unable to insert data - " . mysqli_error($connect)
-            )
-        );
+            echo json_encode(
+                array(
+                    "StatusCode" => 400,
+                    'Status' => 'Error',
+                    "message" => "Error: Unable to insert data - " . mysqli_error($connect)
+                )
+            );
         }
     }
 } else {
