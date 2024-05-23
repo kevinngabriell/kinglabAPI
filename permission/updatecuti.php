@@ -3,6 +3,11 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
+//Display error message
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 require_once('../../connection/connection.php');
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -12,12 +17,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $exp_before = $_POST['exp_before'];
     $employee_id = $_POST['employee_id'];
 
-    $update_cuti_query = "UPDATE annual_leave SET leave_count = '$leave_update', expired_date = '$exp_before' WHERE employee_id = '$employee_id' AND leave_count = '$leave_before' AND expired_date = '$exp_before'";
+    $update_cuti_query = "UPDATE annual_leave SET leave_count = '$leave_update', expired_date = '$exp_update' WHERE employee_id = '$employee_id';";
     if ($connect->query($update_cuti_query) === TRUE) {
-        $response = array(
-            'status' => 'success',
-            'message' => 'Cuti updated successfully.'
-        );
+        http_response_code(200);
+                echo json_encode(
+                    array(
+                        "StatusCode" => 200,
+                        'Status' => 'Success',
+                        "message" => "Success: Data inserted successfully"
+                    )
+                );
     } else {
         $response = array(
             'status' => 'error',

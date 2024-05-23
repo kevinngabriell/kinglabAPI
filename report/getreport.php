@@ -166,7 +166,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             FROM employee A1
             LEFT JOIN department A2 ON A1.department_id = A2.department_id
             LEFT JOIN position_db A3 ON A1.position_id = A3.position_id
-            LEFT JOIN employee_contact_details_db A4 ON A1.id = A4.id;";
+            LEFT JOIN employee_contact_details_db A4 ON A1.id = A4.id
+            WHERE A1.employee_status_id = 'ES-HR-001';";
 
             $result = $connect->query($query);
 

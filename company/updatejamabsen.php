@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $outTime = $_POST['outTime'];
     $company = $_POST['company'];
 
-    $updateAbsenQuery = "UPDATE comany_settings SET In_Time = '$inTime', Out_Time = '$outTime' WHERE Company_ID = '$company'";
+    $updateAbsenQuery = "UPDATE company_settings SET In_Time = '$inTime', Out_Time = '$outTime' WHERE Company_ID = '$company'";
 
     if(mysqli_query($connect, $updateAbsenQuery)){
         http_response_code(200);

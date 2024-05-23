@@ -55,7 +55,7 @@ function getAbsenceStatistics() {
 
     $employee_id = $_GET['employee_id'];
 
-    $query = "SELECT A1.employee_id, A1.date, A2.presence_type_name, COUNT(*) as count
+    $query = "SELECT A1.employee_id, A1.date, A2.presence_type_name, COUNT(DISTINCT A1.date) as count
               FROM absence_log A1
               JOIN presence_type A2 ON A1.presence_type = A2.id_presence_type
               WHERE MONTH(A1.date) = $currentMonth AND YEAR(A1.date) = $currentYear AND A1.employee_id = $employee_id

@@ -1,14 +1,19 @@
-<!-- SELECT * FROM company_settings WHERE Company_ID = 'COM-HR-001'; -->
+
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
+//Display error message
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 require_once('../../connection/connection.php');
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $company_id = $GET['company_id'];
+    $company_id = $_GET['company_id'];
 
     $sql = "SELECT * FROM company_settings WHERE Company_ID = '$company_id';";
     $query = mysqli_query($connect, $sql);

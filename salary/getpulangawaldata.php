@@ -7,13 +7,12 @@ require_once('../../connection/connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $employeeId = $_GET['employee_id'];
-    $month = $_GET['month'];
-    $year = $_GET['year'];
+    $startDate = $_GET['startDate'];
+    $endDate = $_GET['endDate'];
 
-    $query = "SELECT COUNT(A1.id_permission)
+    $query = "SELECT COUNT(A1.id_permission) as jumlah_pulang_awal
     FROM permission_log A1
-    WHERE YEAR(A1.permission_date) = $year
-      AND MONTH(A1.permission_date) = $month
+    WHERE A1.permission_date BETWEEN '$startDate' AND '$endDate'
       AND A1.permission_type = 'PER-TYPE-001'
       AND A1.last_permission_status = 'PER-STATUS-003'
       AND A1.employee_id = '$employeeId';";

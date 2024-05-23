@@ -8,7 +8,7 @@ require_once('../../connection/connection.php');
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $employee_id = $_GET['employee_id'];
 
-    $query = "SELECT message, sender, is_important, is_read FROM notification_alert WHERE receiver =  '$employee_id';";
+    $query = "SELECT A1.id, A2.employee_name as sender, title, receiver, message, is_read, is_important, send_date FROM notification_alert A1 JOIN employee A2 ON A2.id = A1.sender WHERE receiver =  '$employee_id' ORDER BY send_date DESC;";
     $result = $connect->query($query);
 
     if($result->num_rows > 0){

@@ -6,21 +6,26 @@ header("Access-Control-Allow-Headers: Content-Type");
 require_once('../../connection/connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $sql = "SELECT A1.posisi_diajukan, A3.department_name, A1.created_dt, A4.status_name FROM new_employee_request A1 JOIN employee A2 ON A2.id = A1.requestor_employee_id JOIN department A3 ON A3.department_id = A2.department_id JOIN new_request_employee_status_master A4 ON A4.id_status = A1.last_status;";
-    $result = $connect->query($sql);
+    $sql = "SELECT * FROM new_employee_reason";
+    $query = mysqli_query($connect, $sql);
 
-    if ($result->num_rows > 0) {
-        $employee = array();
+    $result = array();
+    while ($row = mysqli_fetch_array($query)) {
+        array_push(
+            $result,
+            array(
+                'reason_request_id' => $row['reason_request_id'],
+                'request_reason' => $row['request_reason']
+            )
+        );
+    }
 
-        while ($row = $result->fetch_assoc()) {
-            $employee[] = $row;
-        }
-
+    if ($result) {
         echo json_encode(
             array(
                 'StatusCode' => 200,
                 'Status' => 'Success',
-                'Data' => $employee
+                'Data' => $result
             )
         );
     } else {

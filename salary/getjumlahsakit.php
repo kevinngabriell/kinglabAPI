@@ -10,9 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $startDate = $_GET['startDate'];
     $endDate = $_GET['endDate'];
 
-    $query = "SELECT COUNT(A1.id_permission) as sakit
+    $query = "SELECT SUM(DATEDIFF(A1.end_date, A1.start_date) + 1) as sakit
     FROM permission_log A1
-    WHERE A1.permission_date BETWEEN '$startDate' AND '$endDate'
+    WHERE A1.start_date BETWEEN '$startDate' AND '$endDate' 
       AND A1.permission_type = 'PER-TYPE-005'
       AND A1.last_permission_status = 'PER-STATUS-003'
       AND A1.employee_id = '$employeeId';";

@@ -16,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = 'Input izin pulang awal telah berhasil dilakukan';
 
     $query = "INSERT IGNORE INTO permission_log 
-        (id_permission, permission_type, `employee_id`, `permission_date`, `permission_reason`, `permission_time`, `cuti_phone`, `start_cuti`, `end_cuti`, `pengganti_cuti`, `last_permission_status`, `reject_reason`, `created_by`, `created_dt`, `update_by`, `update_dt`) 
-        VALUES (NULL, '$permission_type', '$id', '$permission_date', '$permission_reason', '$permission_time', NULL, NULL, NULL, NULL, '$last_permission_status', NULL, '$id', '$date_now', '$id', '$date_now');";
+        (id_permission, permission_type, `employee_id`, `permission_date`, `permission_reason`, `permission_time`, `cuti_phone`, `start_date`, `end_date`, `pengganti_cuti`, `last_permission_status`, `reject_reason`, `created_by`, `created_dt`, `update_by`, `update_dt`) 
+        VALUES (UUID(), '$permission_type', '$id', '$permission_date', '$permission_reason', '$permission_time', NULL, NULL, NULL, NULL, '$last_permission_status', NULL, '$id', '$date_now', '$id', '$date_now');";
     
     if(mysqli_query($connect, $query)) {
         $last_permission_id_query = "SELECT id_permission FROM permission_log ORDER BY id_permission DESC LIMIT 1;";

@@ -2,6 +2,9 @@
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 
 require_once('../../connection/connection.php');
 
@@ -16,9 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $date_now = $_POST['date_now'];
     $action = 'Input izin lembur telah berhasil dilakukan';
 
-    $query = "INSERT IGNORE INTO permission_log 
-        (id_permission, permission_type, `employee_id`, `lembur_date`,`lembur_start`, `lembur_end`, `lembur_keperluan`, `last_permission_status`, `created_by`, `created_dt`) 
-        VALUES (NULL, '$permission_type', '$id', '$overtime_date', '$overtime_start', '$overtime_end', '$overtime_reason', '$last_permission_status', '$id', '$date_now',);";
+    $query = "INSERT INTO permission_log 
+        (id_permission, permission_type, `employee_id`, `permission_date`,`start_time`, `end_time`, `keperluan`, `last_permission_status`, `created_by`, `created_dt`) 
+        VALUES (UUID(), '$permission_type', '$id', '$overtime_date', '$overtime_start', '$overtime_end', '$overtime_reason', '$last_permission_status', '$id', '$date_now');";
     
     if(mysqli_query($connect, $query)) {
         $last_permission_id_query = "SELECT id_permission FROM permission_log ORDER BY id_permission DESC LIMIT 1;";
@@ -42,13 +45,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
         } else {
             http_response_code(404);
-            echo json_encode(
-                array(
-                    "StatusCode" => 400,
-                    'Status' => 'Error',
-                    "message" => "Error: Unable to insert data - " . mysqli_error($connect)
-                )
-            );
+        echo json_encode(
+            array(
+                "StatusCode" => 400,
+                'Status' => 'Error',
+                "message" => "Error: Unable to insert data - " . mysqli_error($connect)
+            )
+        );
         }
     }
 } else {

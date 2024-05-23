@@ -1,18 +1,9 @@
-<!-- SELECT *
-FROM salary_transaction
-WHERE month = 1 AND year = 2024 AND employee_id = '0000000015'; -->
-
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
 require_once('../../connection/connection.php');
-
-// Display error message
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $currentDate = date('Y-m-d');

@@ -12,52 +12,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $query_one = "SELECT COUNT(A1.id) as jumlahLaki
         FROM employee A1
         JOIN gender_db A2 ON A1.gender = A2.gender_id
-        WHERE A2.gender_id = 'GEN-HR-001';";
+        WHERE A2.gender_id = 'GEN-HR-001' AND employee_status_id = 'ES-HR-001';";
 
         $query_two = "SELECT COUNT(A1.id) as jumlahPerempuan
         FROM employee A1
         JOIN gender_db A2 ON A1.gender = A2.gender_id
-        WHERE A2.gender_id = 'GEN-HR-002';";
+        WHERE A2.gender_id = 'GEN-HR-002' AND employee_status_id = 'ES-HR-001';";
 
         $query_three = "SELECT COUNT(A1.id) as belumMenikah
         FROM employee A1
         JOIN status_db A2 ON A1.employee_status = A2.status_id
-        WHERE A2.status_id = 'STS-HR-001';";
+        WHERE A2.status_id = 'STS-HR-001' AND employee_status_id = 'ES-HR-001';";
 
         $query_four = "SELECT COUNT(A1.id) as sudahMenikah
         FROM employee A1
         JOIN status_db A2 ON A1.employee_status = A2.status_id
-        WHERE A2.status_id = 'STS-HR-002';";
+        WHERE A2.status_id = 'STS-HR-002' AND employee_status_id = 'ES-HR-001';";
 
         $query_five = "SELECT COUNT(A1.id) as agamaIslam
         FROM employee A1
         JOIN religion_db A2 ON A1.employee_religion = A2.religion_id
-        WHERE A2.religion_id = 'REL-HR-001';";
+        WHERE A2.religion_id = 'REL-HR-001' AND employee_status_id = 'ES-HR-001';";
 
         $query_six = "SELECT COUNT(A1.id) as agamaKatholik
         FROM employee A1
         JOIN religion_db A2 ON A1.employee_religion = A2.religion_id
-        WHERE A2.religion_id = 'REL-HR-002';";
+        WHERE A2.religion_id = 'REL-HR-002' AND employee_status_id = 'ES-HR-001';";
 
         $query_seven = "SELECT COUNT(A1.id) as agamaKristen
         FROM employee A1
         JOIN religion_db A2 ON A1.employee_religion = A2.religion_id
-        WHERE A2.religion_id = 'REL-HR-003';";
+        WHERE A2.religion_id = 'REL-HR-003' AND employee_status_id = 'ES-HR-001';";
 
         $query_eight = "SELECT COUNT(A1.id) as agamaBudha
         FROM employee A1
         JOIN religion_db A2 ON A1.employee_religion = A2.religion_id
-        WHERE A2.religion_id = 'REL-HR-004';";
+        WHERE A2.religion_id = 'REL-HR-004' AND employee_status_id = 'ES-HR-001';";
 
         $query_nine = "SELECT COUNT(A1.id) as agamaHindu
         FROM employee A1
         JOIN religion_db A2 ON A1.employee_religion = A2.religion_id
-        WHERE A2.religion_id = 'REL-HR-005';";
+        WHERE A2.religion_id = 'REL-HR-005' AND employee_status_id = 'ES-HR-001';";
 
         $query_ten = "SELECT COUNT(A1.id) as agamaKonghucu
         FROM employee A1
         JOIN religion_db A2 ON A1.employee_religion = A2.religion_id
-        WHERE A2.religion_id = 'REL-HR-006';";
+        WHERE A2.religion_id = 'REL-HR-006' AND employee_status_id = 'ES-HR-001';";
+        
+        $query_eleven = "SELECT COUNT(*) AS oneTilFiveYears FROM employee WHERE YEAR(CURDATE()) - YEAR(employee_start_date) BETWEEN 1 AND 5 AND employee_status_id = 'ES-HR-001';";
+        $query_twelve = "SELECT COUNT(*) AS sixTilTenYears FROM employee WHERE YEAR(CURDATE()) - YEAR(employee_start_date) BETWEEN 6 AND 10 AND employee_status_id = 'ES-HR-001';";
+        $query_thirteen = "SELECT COUNT(*) AS moreThenTenYears FROM employee WHERE YEAR(CURDATE()) - YEAR(employee_start_date) > 10 AND employee_status_id = 'ES-HR-001';";
         
         $result_one = $connect->query($query_one);
         $jumlahLaki = array();
@@ -137,6 +141,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             'jumlahHindu' => $jumlahHindu[0]['agamaHindu'],
             'jumlahKonghucu' => $jumlahKonghucu[0]['agamaKonghucu'],
         ];
+        
+        $result_eleven = $connect->query($query_eleven);
+        $jumlahTahunSatu = array();
+        while($row_eleven = $result_eleven->fetch_assoc()){
+            $jumlahTahunSatu[] = $row_eleven;
+        }
+        
+        $result_twelve = $connect->query($query_twelve);
+        $jumlahTahunDua = array();
+        while($row_twelve = $result_twelve->fetch_assoc()){
+            $jumlahTahunDua[] = $row_twelve;
+        }
+        
+        $result_thirteen = $connect->query($query_thirteen);
+        $jumlahTahunTiga = array();
+        while($row_thirteen = $result_thirteen->fetch_assoc()){
+            $jumlahTahunTiga[] = $row_thirteen;
+        }
+        
+        $yearsData = [
+            'oneTilFive' => $jumlahTahunSatu[0]['oneTilFiveYears'],
+            'sixTilTenYears' => $jumlahTahunDua[0]['sixTilTenYears'],
+            'moreThenTenYears' => $jumlahTahunTiga[0]['moreThenTenYears'],
+        ];
 
         echo json_encode(
             array(
@@ -145,7 +173,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 'Data' => [
                     'Gender' => $genderData,
                     'Status' => $menikahData,
-                    'Religion' => $religionData
+                    'Religion' => $religionData,
+                    'Year' => $yearsData
                 ]
             )
         );
@@ -154,52 +183,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $query_one = "SELECT COUNT(A1.id) as jumlahLaki
         FROM employee A1
         JOIN gender_db A2 ON A1.gender = A2.gender_id
-        WHERE A2.gender_id = 'GEN-HR-001' AND A1.department_id = '$departmentId';";
+        WHERE A2.gender_id = 'GEN-HR-001' AND A1.department_id = '$departmentId' AND employee_status_id = 'ES-HR-001';";
 
         $query_two = "SELECT COUNT(A1.id) as jumlahPerempuan
         FROM employee A1
         JOIN gender_db A2 ON A1.gender = A2.gender_id
-        WHERE A2.gender_id = 'GEN-HR-002' AND A1.department_id = '$departmentId';";
+        WHERE A2.gender_id = 'GEN-HR-002' AND A1.department_id = '$departmentId' AND employee_status_id = 'ES-HR-001';";
 
         $query_three = "SELECT COUNT(A1.id) as belumMenikah
         FROM employee A1
         JOIN status_db A2 ON A1.employee_status = A2.status_id
-        WHERE A2.status_id = 'STS-HR-001' AND A1.department_id = '$departmentId';";
+        WHERE A2.status_id = 'STS-HR-001' AND A1.department_id = '$departmentId' AND employee_status_id = 'ES-HR-001';";
 
         $query_four = "SELECT COUNT(A1.id) as sudahMenikah
         FROM employee A1
         JOIN status_db A2 ON A1.employee_status = A2.status_id
-        WHERE A2.status_id = 'STS-HR-002' AND A1.department_id = '$departmentId';";
+        WHERE A2.status_id = 'STS-HR-002' AND A1.department_id = '$departmentId' AND employee_status_id = 'ES-HR-001';";
 
         $query_five = "SELECT COUNT(A1.id) as agamaIslam
         FROM employee A1
         JOIN religion_db A2 ON A1.employee_religion = A2.religion_id
-        WHERE A2.religion_id = 'REL-HR-001' AND A1.department_id = '$departmentId';";
+        WHERE A2.religion_id = 'REL-HR-001' AND A1.department_id = '$departmentId' AND employee_status_id = 'ES-HR-001';";
 
         $query_six = "SELECT COUNT(A1.id) as agamaKatholik
         FROM employee A1
         JOIN religion_db A2 ON A1.employee_religion = A2.religion_id
-        WHERE A2.religion_id = 'REL-HR-002' AND A1.department_id = '$departmentId';";
+        WHERE A2.religion_id = 'REL-HR-002' AND A1.department_id = '$departmentId' AND employee_status_id = 'ES-HR-001';";
 
         $query_seven = "SELECT COUNT(A1.id) as agamaKristen
         FROM employee A1
         JOIN religion_db A2 ON A1.employee_religion = A2.religion_id
-        WHERE A2.religion_id = 'REL-HR-003' AND A1.department_id = '$departmentId';";
+        WHERE A2.religion_id = 'REL-HR-003' AND A1.department_id = '$departmentId' AND employee_status_id = 'ES-HR-001';";
 
         $query_eight = "SELECT COUNT(A1.id) as agamaBudha
         FROM employee A1
         JOIN religion_db A2 ON A1.employee_religion = A2.religion_id
-        WHERE A2.religion_id = 'REL-HR-004' AND A1.department_id = '$departmentId';";
+        WHERE A2.religion_id = 'REL-HR-004' AND A1.department_id = '$departmentId' AND employee_status_id = 'ES-HR-001';";
 
         $query_nine = "SELECT COUNT(A1.id) as agamaHindu
         FROM employee A1
         JOIN religion_db A2 ON A1.employee_religion = A2.religion_id
-        WHERE A2.religion_id = 'REL-HR-005' AND A1.department_id = '$departmentId';";
+        WHERE A2.religion_id = 'REL-HR-005' AND A1.department_id = '$departmentId' AND employee_status_id = 'ES-HR-001';";
 
         $query_ten = "SELECT COUNT(A1.id) as agamaKonghucu
         FROM employee A1
         JOIN religion_db A2 ON A1.employee_religion = A2.religion_id
-        WHERE A2.religion_id = 'REL-HR-006' AND A1.department_id = '$departmentId';";
+        WHERE A2.religion_id = 'REL-HR-006' AND A1.department_id = '$departmentId' AND employee_status_id = 'ES-HR-001';";
+        
+        $query_eleven = "SELECT COUNT(*) AS oneTilFiveYears FROM employee WHERE YEAR(CURDATE()) - YEAR(employee_start_date) BETWEEN 1 AND 5 AND employee_status_id = 'ES-HR-001' AND department_id = '$departmentId';";
+        $query_twelve = "SELECT COUNT(*) AS sixTilTenYears FROM employee WHERE YEAR(CURDATE()) - YEAR(employee_start_date) BETWEEN 6 AND 10 AND employee_status_id = 'ES-HR-001' AND department_id = '$departmentId';";
+        $query_thirteen = "SELECT COUNT(*) AS moreThenTenYears FROM employee WHERE YEAR(CURDATE()) - YEAR(employee_start_date) > 10 AND employee_status_id = 'ES-HR-001' AND department_id = '$departmentId';";
         
         $result_one = $connect->query($query_one);
         $jumlahLaki = array();
@@ -280,6 +313,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             'jumlahKonghucu' => $jumlahKonghucu[0]['agamaKonghucu'],
         ];
 
+        $result_eleven = $connect->query($query_eleven);
+        $jumlahTahunSatu = array();
+        while($row_eleven = $result_eleven->fetch_assoc()){
+            $jumlahTahunSatu[] = $row_eleven;
+        }
+        
+        $result_twelve = $connect->query($query_twelve);
+        $jumlahTahunDua = array();
+        while($row_twelve = $result_twelve->fetch_assoc()){
+            $jumlahTahunDua[] = $row_twelve;
+        }
+        
+        $result_thirteen = $connect->query($query_thirteen);
+        $jumlahTahunTiga = array();
+        while($row_thirteen = $result_thirteen->fetch_assoc()){
+            $jumlahTahunTiga[] = $row_thirteen;
+        }
+        
+        $yearsData = [
+            'oneTilFive' => $jumlahTahunSatu[0]['oneTilFiveYears'],
+            'sixTilTenYears' => $jumlahTahunDua[0]['sixTilTenYears'],
+            'moreThenTenYears' => $jumlahTahunTiga[0]['moreThenTenYears'],
+        ];
+
         echo json_encode(
             array(
                 'StatusCode' => 200,
@@ -287,7 +344,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 'Data' => [
                     'Gender' => $genderData,
                     'Status' => $menikahData,
-                    'Religion' => $religionData
+                    'Religion' => $religionData,
+                    'Year' => $yearsData
                 ]
             )
         );

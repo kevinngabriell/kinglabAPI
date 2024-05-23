@@ -6,10 +6,10 @@ header("Access-Control-Allow-Headers: Content-Type");
 require_once('../../connection/connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $sql = "SELECT SELECT A1.candidate_name, A2.position_name, A1.candidate_phone, A1.candidate_email, A1.candidate_surat_lamaran, A1.candidate_ijazah, A1.candidate_riwayat_hidup, A3.status_name, A1.job_ads
+    $sql = "SELECT DISTINCT A1.id_applicant, A1.candidate_name, A2.position_name, A1.candidate_phone, A1.candidate_email, A1.candidate_surat_lamaran, A1.candidate_ijazah, A1.candidate_riwayat_hidup, A3.status_name, A1.job_ads
     FROM job_applicant A1
-    LEFT JOIN job_ads A2 ON A1.job_ads = A2.id_job_ads
-    LEFT JOIN new_request_employee_status_master A3 ON A1.status = A3.id_status;";
+    JOIN job_ads A2 ON A1.job_ads = A2.id_job_ads
+    JOIN new_request_employee_status_master A3 ON A1.status = A3.id_status;";
     $result = $connect->query($sql);
 
     if ($result->num_rows > 0) {

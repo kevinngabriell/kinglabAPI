@@ -7,11 +7,11 @@ require_once('../../connection/connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    $query = "SELECT A2.employee_name, A3.status_name, A1.item_request
+    $query = "SELECT A2.employee_name, A3.status_name, A1.item_request, A1.request_id
     FROM inventory_request A1
     LEFT JOIN employee A2 ON A1.employee_id = A2.id
     LEFT JOIN inventory_request_status A3 ON A1.last_status_request = A3.status_id
-    ORDER BY A1.insert_dt DESC LIMIT 3;";
+    ORDER BY A1.insert_dt DESC;";
 
 $result = $connect->query($query);
 

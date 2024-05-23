@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $disableForeignKeyChecksQuery = "SET foreign_key_checks = 0";
     mysqli_query($connect, $disableForeignKeyChecksQuery);
 
-    $update_log_query = "UPDATE new_employee_request SET last_status = 'NEW-STATUS-003', updated_by = '$employee_id', updated_dt = '$currentDateTimeString' WHERE id_new_employee_request = '$request_id';";
+    $update_log_query = "UPDATE new_employee_request SET last_status = 'NEW-STATUS-005', updated_by = '$employee_id', updated_dt = '$currentDateTimeString' WHERE id_new_employee_request = '$request_id';";
     $insert_history_query = "INSERT IGNORE INTO new_employee_request_log 
         (id, new_request_id, action, action_by, action_dt) VALUES 
         (NULL, '$request_id', 'Permintaan karyawan baru anda telah disetujui oleh Direktur', '$employee_id', '$currentDateTimeString');";

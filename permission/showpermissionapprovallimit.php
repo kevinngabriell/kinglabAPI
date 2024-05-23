@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     JOIN employee A2 ON A1.employee_id = A2.id
     JOIN permission_type_master A3 ON A1.permission_type = A3.id_permission_type
     JOIN permission_status_master A4 ON A1.last_permission_status = A4.id_permission_status
-    WHERE A2.employee_spv = '$id'ORDER BY A1.id_permission DESC LIMIT 3;";
+    WHERE A2.employee_spv = '$id'ORDER BY A1.created_dt DESC LIMIT 3;";
     $result = mysqli_query($connect, $query);
 
     if (mysqli_num_rows($result) > 0) {

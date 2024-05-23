@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $month = $_GET['month'];
     $year = $_GET['year'];
 
-    $query = "SELECT A1.employee_name, A2.month, A2.year, A2.is_complete
+    $query = "SELECT A1.employee_name, A2.month, A2.year, A2.is_complete, A1.id
     FROM employee A1
     LEFT JOIN salary_transaction A2 ON A1.id = A2.employee_id AND A2.month = $month AND A2.year = $year
     LEFT JOIN salary_category A3 ON A2.salary_category = A3.id_salary_category

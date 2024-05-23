@@ -9,8 +9,11 @@ require_once('../../connection/connection.php');
 function checkUsername($username) {
     global $connect;
 
-    $stmt = $connect->prepare("SELECT us.username, em.employee_name FROM users us JOIN employee em ON us.employee_id = em.id WHERE us.username = ?");
-    $stmt->bind_param("s", $employeeId);
+    $stmt = $connect->prepare("SELECT A1.username, A2.employee_name
+                        FROM users A1
+                        JOIN employee A2 ON A1.employee_id = A2.id
+                        WHERE A1.employee_id = ?");
+    $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
@@ -20,7 +23,7 @@ function checkUsername($username) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
+    $username = $_POST['employee_id'];
     
     $resultData = checkUsername($username);
 

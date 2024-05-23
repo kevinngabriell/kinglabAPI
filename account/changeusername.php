@@ -6,9 +6,10 @@ header("Access-Control-Allow-Headers: Content-Type");
 require_once('../../connection/connection.php');
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $absence_id = $_POST['absence_id'];
+    $new_username = $_POST['new_username'];
+    $username = $_POST['employee_id'];
 
-    $updated_username_query = "UPDATE absence_log SET is_valid = 1 WHERE absence_id = '$absence_id';";
+    $updated_username_query = "UPDATE users SET username = '$new_username' WHERE employee_id = '$username';";
 
     if ($connect->query($updated_username_query) === TRUE) {
         $response = array(

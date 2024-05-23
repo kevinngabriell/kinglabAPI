@@ -3,6 +3,11 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
+// Display error message
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 require_once('../../connection/connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -13,47 +18,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $jakartaDatetime = new DateTime('now', $jakartaTimezone);
     $insertDatetime = $jakartaDatetime->format('Y-m-d H:i:s');
     $action = 'Input izin sakit telah berhasil dilakukan';
-    $attachment = base64_decode($_POST['attachment']);
+    $base64Image = $_POST['base64_image']; // Assuming 'base64_image' is the key for the base64 image string in your request
     $start_date = $_POST['start_date'];
     $end_date = $_POST['end_date'];
+    $uuid = uniqid();
 
-    $insert_query = "INSERT INTO permission_log (id_permission, permission_type, employee_id, start_date, end_date, attachment, created_by, created_dt) VALUES (UUID(), '$permission_type', '$id', '$start_date', '$end_date', '$attachment', '$id', '$insertDatetime')";
+    // Decode the base64 image string into bytes
+    $imageData = base64_decode($base64Image);
 
-    if(mysqli_query($connect, $insert_query)){
-        $last_permission_id_query = "SELECT id_permission FROM permission_log ORDER BY id_permission DESC LIMIT 1;";
-        $result_last_permission_id = $connect->query($last_permission_id_query);
-
-        $row = $result_last_permission_id->fetch_assoc();
-        $last_permission_id = $row["id_permission"];
-
-        $query_history = "INSERT IGNORE INTO permission_history 
-        (id, permission_id, action, action_by, action_dt) VALUES 
-        (NULL, '$last_permission_id', '$action', '$id', '$date_now');";
-
-        if(mysqli_query($connect, $query_history)) {
-            http_response_code(200);
-            echo json_encode(
-                array(
-                    "StatusCode" => 200,
-                    'Status' => 'Success',
-                    "message" => "Success: Data inserted successfully"
-                )
-            );
-        } else {
-            http_response_code(404);
-            echo json_encode(
-                array(
-                    "StatusCode" => 400,
-                    'Status' => 'Error',
-                    "message" => "Error: Unable to insert data - " . mysqli_error($connect)
-                )
-            );
-}
-    } else {
-
-    }
+    // Prepare the insert query
+    $insert_query = "INSERT INTO permission_log (
+        id_permission, permission_type, employee_id, start_date, end_date, attachment, created_by, created_dt, last_permission_status) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
+    // Prepare the statement
+    $stmt = mysqli_prepare($connect, $insert_query);
+
+    // Bind parameters
+    mysqli_stmt_bind_param($stmt, "sssssssss", $uuid, $permission_type, $id, $start_date, $end_date, $imageData, $id, $insertDatetime, $last_permission_status);
+
+    // Execute the query
+    if (mysqli_stmt_execute($stmt)) {
+        // Your success response
+        http_response_code(200);
+        echo json_encode(
+            array(
+                "StatusCode" => 200,
+                'Status' => 'Success',
+                "message" => "Success: Data inserted successfully"
+            )
+        );
+    } else {
+        // Error handling
+        http_response_code(404);
+        echo json_encode(
+            array(
+                "StatusCode" => 400,
+                'Status' => 'Error',
+                "message" => "Error: Unable to insert data - " . mysqli_error($connect)
+            )
+        );
+    }
+
+    // Close statement
+    mysqli_stmt_close($stmt);
+
 } else {
+    // Invalid method error
     http_response_code(404);
     echo json_encode(array(
         "StatusCode" => 404,

@@ -334,7 +334,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $action = "Permohonan perjalanan dinas telah disetujui oleh HRD pada $currentDateTimeString";
 
         $query_one = "UPDATE businesstrip SET status = '$new_status', update_by = '$hrd_id', update_dt = '$currentDateTimeString' WHERE businesstrip_id = '$businesstrip_id'";
-        $query_two = "INSERT INTO businesstrip_log (businesstrip_id, action, action_by, action_dt) VALUES ('$businesstrip_id', '$action', '$spv_id', '$currentDateTimeString');";
+        $query_two = "INSERT INTO businesstrip_log (businesstrip_id, action, action_by, action_dt) VALUES ('$businesstrip_id', '$action', '$hrd_id', '$currentDateTimeString');";
         $query_three = "INSERT INTO notification_alert (receiver, id, sender, title, message, send_date) VALUES ('$employee_id', UUID() ,'0000000015', 'Persetujuan Perjalanan Dinas', '$action', '$currentDateTimeString');";
         
         if(mysqli_query($connect, $query_one) && mysqli_query($connect, $query_two) && mysqli_query($connect, $query_three)){

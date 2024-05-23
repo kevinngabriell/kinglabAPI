@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $startDate = $_GET['startDate'];
     $endDate = $_GET['endDate'];
 
-    $query = "SELECT COUNT(A1.id_permission) as sakit
+    $query = "SELECT SUM(TIMESTAMPDIFF(HOUR, A1.start_time, A1.end_time)) as lembur
     FROM permission_log A1
     WHERE A1.permission_date BETWEEN '$startDate' AND '$endDate'
       AND A1.permission_type = 'PER-TYPE-004'

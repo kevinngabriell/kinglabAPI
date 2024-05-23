@@ -46,10 +46,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $education_start_5 = $_POST['education_start_5'];
     $education_end_5 = $_POST['education_end_5'];
     $education_desc_5 = $_POST['education_desc_5'];
+    
+    $query_one = "UPDATE employee_education_history
+    SET 
+        emp_edu_id = '$education_type_1',
+        emp_name = '$education_name_1', 
+        emp_major = '$education_major_1', 
+        emp_grade = '$education_grade_1', 
+        emp_start = '$education_start_1', 
+        emp_end = '$education_end_1', 
+        emp_desc = '$education_desc_1'
+    WHERE id = '$id' AND `index` = 1;";
 
-    $query = "INSERT IGNORE INTO employee_education_history (id, emp_edu_id_1, emp_name_1, emp_major_1, emp_grade_1, emp_start_1, emp_end_1, emp_desc_1, emp_edu_id_2, emp_edu_id_3, emp_edu_id_4, emp_edu_id_5, emp_name_2, emp_name_3, emp_name_4, emp_name_5, emp_major_2, emp_major_3, emp_major_4, emp_major_5, emp_grade_2, emp_grade_3, emp_grade_4, emp_grade_5, emp_start_2, emp_start_3, emp_start_4, emp_start_5, emp_end_2, emp_end_3, emp_end_4, emp_end_5, emp_desc_2, emp_desc_3, emp_desc_4, emp_desc_5) VALUES ('$id', '$education_type_1', '$education_name_1', '$education_major_1', '$education_grade_1', '$education_start_1', '$education_end_1', '$education_desc_1', '$education_type_2', '$education_type_3', '$education_type_4', '$education_type_5', '$education_name_2', '$education_name_3', '$education_name_4', '$education_name_5', '$education_major_2', '$education_major_3', '$education_major_4', '$education_major_5', '$education_grade_2', '$education_grade_3', '$education_grade_4', '$education_grade_5', '$education_start_2', '$education_start_3', '$education_start_4', '$education_start_5', '$education_end_2', '$education_end_3', '$education_end_4', '$education_end_5', '$education_desc_2', '$education_desc_3', '$education_desc_4', '$education_desc_5');";
+    $query_two = "INSERT INTO employee_education_history (id, emp_edu_id, emp_name, emp_major, emp_grade, emp_start, emp_end, emp_desc, `index`) 
+VALUES ('$id', '$education_type_2','$education_name_2', '$education_major_2', '$education_grade_2', '$education_start_2', '$education_end_2', '$education_desc_2', 2);";
 
-    if (mysqli_query($connect, $query)) {
+$query_three = "INSERT INTO employee_education_history (id, emp_edu_id, emp_name, emp_major, emp_grade, emp_start, emp_end, emp_desc, `index`) 
+VALUES ('$id', '$education_type_3', '$education_name_3', '$education_major_3', '$education_grade_3', '$education_start_3', '$education_end_3', '$education_desc_3', 3);";
+
+$query_four = "INSERT INTO employee_education_history (id, emp_edu_id, emp_name, emp_major, emp_grade, emp_start, emp_end, emp_desc, `index`) 
+VALUES ('$id', '$education_type_4', '$education_name_4', '$education_major_4', '$education_grade_4', '$education_start_4', '$education_end_4', '$education_desc_4', 4);";
+
+$query_five = "INSERT INTO employee_education_history (id, emp_edu_id, emp_name, emp_major, emp_grade, emp_start, emp_end, emp_desc, `index`) 
+VALUES ('$id', '$education_type_5', '$education_name_5', '$education_major_5', '$education_grade_5', '$education_start_5', '$education_end_5', '$education_desc_5', 5);";
+
+
+    if (mysqli_query($connect, $query_one) && mysqli_query($connect, $query_two) && mysqli_query($connect, $query_three) && mysqli_query($connect, $query_four) && mysqli_query($connect, $query_five)) {
         http_response_code(200);
         echo json_encode(
             array(

@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = 'Pengajuan karyawan baru telah berhasil diajukan';
 
 
-    $query = "INSERT IGNORE INTO new_employee_request 
+    $query = "INSERT INTO new_employee_request 
         (id_new_employee_request, requestor_employee_id, posisi_diajukan, jumlah_karyawan_diajukan, reason_new_request, gender, hubungan_kerja, status_karyawan, minimal_usia, maksimal_usia, tinggi_badan, berat_badan, fakultas, jurusan, ipk, lama_pengalaman, peran, keahlian_lain, 
         kualifikasi_serupa, pic_karyawan, rincian_tugas, mulai_kerja, catatan_lain, last_status, created_by, created_dt, updated_by, updated_dt) VALUES 
         ('$requestId', '$employeeId', '$requestPosisi', '$requestJumlah', '$requestAlasan', '$requestGender', '$requestHubunganKerja', '$requestStatusKaryawan', '$requestMinUsia', '$requestMaxUsia', '$requestTinggiBadan', '$requestBeratBadan', '$requestFakultas', '$requestJurusan', 
@@ -47,9 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $row = $result_last_permission_id->fetch_assoc();
         $last_permission_id = $row["id_new_employee_request"];
 
-        $query_history = "INSERT IGNORE INTO permission_history 
+        $query_history = "INSERT IGNORE INTO new_employee_request_log 
         (id, new_request_id, action, action_by, action_dt) VALUES 
-        (NULL, '$id_new_employee_request', '$action', '$employeeId', '$requestDateInsert');";
+        (NULL, '$last_permission_id', '$action', '$employeeId', '$requestDateInsert');";
 
         if(mysqli_query($connect, $query_history)) {
             http_response_code(200);

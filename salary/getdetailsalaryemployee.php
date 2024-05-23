@@ -5,10 +5,11 @@ header("Access-Control-Allow-Headers: Content-Type");
 
 require_once('../../connection/connection.php');
 
-//Display error message
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+// //Display error message
+// ini_set('display_errors', '1');
+// ini_set('display_startup_errors', '1');
+// error_reporting(E_ALL);
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $month = $_GET['month'];
@@ -23,28 +24,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $gajiTetap = $gajiTetapRow['amount'];
     }
 
-    //Get THR
-    $THRQuery = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-002'";
-    $THRResult = $connect->query($THRQuery);
+    //Get Jabatan
+    $JabatanQuery = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-002'";
+    $JabatanResult = $connect->query($JabatanQuery);
 
-    while ($THRRow = $THRResult->fetch_assoc()){
-        $THR = $THRRow['amount'];
+    while ($JabatanRow = $JabatanResult->fetch_assoc()){
+        $Jabatan = $JabatanRow['amount'];
     }
 
-    //Get Transport
-    $TransportQuery = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-003'";
-    $TransportResult = $connect->query($TransportQuery);
+    //Get BPJS Ketenag
+    $BPJSKetenagQuery = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-003'";
+    $BPJSKetenagResult = $connect->query($BPJSKetenagQuery);
 
-    while ($TransportRow = $TransportResult->fetch_assoc()){
-        $Transport = $TransportRow['amount'];
+    while ($BPJSKetenagRow = $BPJSKetenagResult->fetch_assoc()){
+        $BPJSKetenag = $BPJSKetenagRow['amount'];
     }
 
-    //Get BPJS
-    $BPJSQuery = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-004'";
-    $BPJSResult = $connect->query($BPJSQuery);
+    //Get BPJSKesehatan
+    $BPJSKesehatanQuery = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-004'";
+    $BPJSKesehatanResult = $connect->query($BPJSKesehatanQuery);
 
-    while ($BPJSRow = $BPJSResult->fetch_assoc()){
-        $BPJS = $BPJSRow['amount'];
+    while ($BPJSKesehatanRow = $BPJSKesehatanResult->fetch_assoc()){
+        $BPJSKesehatan = $BPJSKesehatanRow['amount'];
     }
 
     //Get Lembur
@@ -55,12 +56,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $Lembur = $LemburRow['amount'];
     }
 
-    //Get Bonus
-    $BonusQuery = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-006'";
-    $BonusResult = $connect->query($BonusQuery);
+    //Get Transport
+    $TransportQuery = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-006'";
+    $TransportResult = $connect->query($TransportQuery);
 
-    while ($BonusRow = $BonusResult->fetch_assoc()){
-        $Bonus = $BonusRow['amount'];
+    while ($TransportRow = $TransportResult->fetch_assoc()){
+        $Transport = $TransportRow['amount'];
     }
 
     //Get Lainnya
@@ -71,55 +72,101 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $Lainnya = $LainnyaRow['amount'];
     }
 
-    //Get JHT
-    $JHTQuery = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-008'";
-    $JHTResult = $connect->query($JHTQuery);
+    //Get Pinjaman
+    $PinjamanQuery = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-008'";
+    $PinjamanResult = $connect->query($PinjamanQuery);
 
-    while ($JHTRow = $JHTResult->fetch_assoc()){
-        $JHT = $JHTRow['amount'];
+    while ($PinjamanRow = $PinjamanResult->fetch_assoc()){
+        $Pinjaman = $PinjamanRow['amount'];
     }
 
-    //Get JP
-    $JPQuery = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-009'";
-    $JPResult = $connect->query($JPQuery);
+    //Get Pajak
+    $PajakQuery = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-009'";
+    $PajakResult = $connect->query($PajakQuery);
 
-    while ($JPRow = $JPResult->fetch_assoc()){
-        $JP = $JPRow['amount'];
+    while ($PajakRow = $PajakResult->fetch_assoc()){
+        $Pajak = $PajakRow['amount'];
     }
 
-    //Get PPH
-    $PPHQuery = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-010'";
-    $PPHResult = $connect->query($PPHQuery);
+    //Get PotBPJSKet1
+    $PotBPJSKet1Query = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-010'";
+    $PotBPJSKet1Result = $connect->query($PotBPJSKet1Query);
 
-    while ($PPHRow = $PPHResult->fetch_assoc()){
-        $PPH = $PPHRow['amount'];
+    while ($PotBPJSKet1Row = $PotBPJSKet1Result->fetch_assoc()){
+        $PotBPJSKet1 = $PotBPJSKet1Row['amount'];
+    }
+    
+    //Get PotBPJSKes1
+    $PotBPJSKes1Query = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-011'";
+    $PotBPJSKes1Result = $connect->query($PotBPJSKes1Query);
+
+    while ($PotBPJSKes1Row = $PotBPJSKes1Result->fetch_assoc()){
+        $PotBPJSKes1 = $PotBPJSKes1Row['amount'];
+    }
+    
+    //Get PotBPJSKet2
+    $PotBPJSKet2Query = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-012'";
+    $PotBPJSKet2Result = $connect->query($PotBPJSKet2Query);
+
+    while ($PotBPJSKet2Row = $PotBPJSKet2Result->fetch_assoc()){
+        $PotBPJSKet2 = $PotBPJSKet2Row['amount'];
+    }
+    
+    //Get PotBPJSKes2
+    $PotBPJSKes2Query = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-013'";
+    $PotBPJSKes2Result = $connect->query($PotBPJSKes2Query);
+
+    while ($PotBPJSKes2Row = $PotBPJSKes2Result->fetch_assoc()){
+        $PotBPJSKes2 = $PotBPJSKes2Row['amount'];
     }
 
+    //Get PPHBonus
+    $PPHBonusQuery = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-014'";
+    $PPHBonusResult = $connect->query($PPHBonusQuery);
+
+    while ($PPHBonusRow = $PPHBonusResult->fetch_assoc()){
+        $PPHBonus = $PPHBonusRow['amount'];
+    }
+    
     //Get penguranganLainnya
-    $penguranganLainnyaQuery = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-011'";
+    $penguranganLainnyaQuery = "SELECT amount FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND salary_category = 'SAL-015'";
     $penguranganLainnyaResult = $connect->query($penguranganLainnyaQuery);
 
     while ($penguranganLainnyaRow = $penguranganLainnyaResult->fetch_assoc()){
         $penguranganLainnya = $penguranganLainnyaRow['amount'];
     }
+    
+    //Get total 
+    $totalQuery = "SELECT total_earnings, total_deductions, total_thp FROM salary_transaction WHERE month = '$month' AND year = '$year' AND employee_id = '$employeeId' AND total_earnings IS NOT NULL;";
+    $totalResult = $connect->query($totalQuery);
+
+    while ($totalRow = $totalResult->fetch_assoc()){
+        $totalPenghasilan = $totalRow['total_earnings'];
+        $totalPengurangan = $totalRow['total_deductions'];
+        $totalTakeHomePay = $totalRow['total_thp'];
+    }
 
     echo json_encode(
         array(
-            'StatusCode' => 200,
-            'Status' => 'Success',
-            'Data' => [
-                'gajiTetap' => $gajiTetap,
-                'THR' => $THR,
-                'Transport' => $Transport,
-                'BPJS' => $BPJS,
-                'Lembur' => $Lembur,
-                'Bonus' => $Bonus,
-                'Lainnya' => $Lainnya,
-                'JHT' => $JHT,
-                'JP' => $JP,
-                'PPH' => $PPH,
-                'penguranganLainnya' => $penguranganLainnya
-            ]
+            'gajiTetap' => $gajiTetap,
+            'Jabatan' => $Jabatan,
+            'Transport' => $Transport,
+            'BPJSKetenag' => $BPJSKetenag,
+            'BPJSKesehatan' => $BPJSKesehatan,
+            'Lembur' => $Lembur,
+            'Transport' => $Transport,
+            'Lainnya' => $Lainnya,
+            'Pinjaman' => $Pinjaman,
+            'Pajak' => $Pajak,
+            'PotBPJSKet1' => $PotBPJSKet1,
+            'PotBPJSKes1' => $PotBPJSKes1,
+            'PotBPJSKet2' => $PotBPJSKet2,
+            'PotBPJSKes2' => $PotBPJSKes2,
+            'PPHBonus' => $PPHBonus,
+            'penguranganLainnya' => $penguranganLainnya,
+            'totalPendapatan' => $totalPenghasilan,
+            'totalPengurangan' => $totalPengurangan,
+            'totalTakeHomePay' => $totalTakeHomePay
         )
     );
 

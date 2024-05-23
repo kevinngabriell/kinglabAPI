@@ -8,7 +8,7 @@ require_once('../../connection/connection.php');
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $employee_id = $_GET['employee_id'];
 
-    $query = "SELECT employee_cuti FROM employee WHERE id = '$employee_id';";
+    $query = "SELECT expired_date, leave_count FROM annual_leave WHERE employee_id = '$employee_id' AND expired_date > CURDATE();";
     $result = $connect->query($query);
 
     if($result->num_rows > 0){

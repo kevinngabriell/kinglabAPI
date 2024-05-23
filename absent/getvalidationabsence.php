@@ -7,7 +7,7 @@ require_once('../../connection/connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    $query = "SELECT COUNT(absence_id) as not_verified FROM absence_log WHERE MONTH(absence_log.date) = MONTH(CURRENT_DATE()) AND YEAR(absence_log.date) = YEAR(CURRENT_DATE()) AND (absence_log.is_valid IS NULL OR absence_log.is_valid = '0');";
+    $query = "SELECT COUNT(absence_id) as not_verified FROM absence_log WHERE (absence_log.is_valid IS NULL OR absence_log.is_valid = '0');";
     $result = $connect->query($query);
 
     if($result->num_rows > 0){

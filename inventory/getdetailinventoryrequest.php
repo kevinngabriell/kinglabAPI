@@ -8,7 +8,7 @@ require_once('../../connection/connection.php');
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $request_id = $_GET['request_id'];
 
-    $query = "SELECT A2.employee_name, A1.employee_id, A3.department_name, A4.position_name, A1.item_request, A5.request_reason, A1.detail_request, A1.last_status_request, A6.status_name
+    $query = "SELECT A2.employee_name, A1.employee_id, A3.department_name, A4.position_name, A1.item_request, A5.request_reason, A1.detail_request, A1.last_status_request, A6.status_name, A1.insert_dt
     FROM inventory_request A1
     LEFT JOIN employee A2 ON A1.employee_id = A2.id
     LEFT JOIN department A3 ON A2.department_id = A3.department_id

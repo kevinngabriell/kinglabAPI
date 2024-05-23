@@ -30,20 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'];
 
     // Perform the insertion query
-    $query = "INSERT IGNORE INTO employee_contact_details_db (
-        employee_address_ktp, employee_address_status_ktp, employee_rt_ktp, employee_rw_ktp,
-        employee_provinsi_ktp, employee_kota_kab_ktp, employee_kec_ktp, employee_kel_ktp,
-        employee_address_now, employee_address_status_now, employee_rt_now, employee_rw_now,
-        employee_provinsi_now, employee_kot_kab_now, employee_kec_now, employee_kel_now,
-        employee_email, employee_phone_number, id
-    ) 
-    VALUES (
-        '$employee_address_ktp', '$employee_address_status_ktp', '$employee_rt_ktp', '$employee_rw_ktp',
-        '$employee_provinsi_ktp', '$employee_kota_kab_ktp', '$employee_kec_ktp', '$employee_kel_ktp',
-        '$employee_address_now', '$employee_address_status_now', '$employee_rt_now', '$employee_rw_now',
-        '$employee_provinsi_now', '$employee_kot_kab_now', '$employee_kec_now', '$employee_kel_now',
-        '$employee_email', '$employee_phone_number', '$id'
-    )";
+    $query = "UPDATE employee_contact_details_db SET employee_address_ktp = '$employee_address_ktp', employee_address_status_ktp = '$employee_address_status_ktp',
+    employee_rt_ktp = '$employee_rt_ktp', employee_rw_ktp = '$employee_rw_ktp', employee_provinsi_ktp = '$employee_provinsi_ktp', employee_kota_kab_ktp = '$employee_kota_kab_ktp',
+    employee_kec_ktp = '$employee_kec_ktp', employee_kel_ktp = '$employee_kel_ktp', employee_address_now = '$employee_address_now', employee_address_status_now = '$employee_address_status_now',
+    employee_rt_now = '$employee_rt_now', employee_rw_now = '$employee_rw_now', employee_provinsi_now = '$employee_provinsi_now', employee_kot_kab_now = '$employee_kot_kab_now',
+    employee_kec_now = '$employee_kec_now', employee_kel_now = '$employee_kel_now', employee_email = '$employee_email', employee_phone_number = '$employee_phone_number'  WHERE id = '$id'";
 
     if (mysqli_query($connect, $query)) {
         http_response_code(200);

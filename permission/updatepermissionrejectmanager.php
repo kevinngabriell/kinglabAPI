@@ -1,20 +1,26 @@
 <?php
+
+// Enable CORS
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
-require_once('../../connection/connection.php');
+// Include the database connection
+require_once('../../conn/connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $idPermission = $_POST["id_permission"];
     $employee_id = $_POST['employee_id'];
 
+    // Create a DateTime object for the current date and time
     $currentDateTime = new DateTime();
     
+    // Set the time zone to Indonesia time
     $indonesiaTimeZone = new DateTimeZone('Asia/Jakarta');
     $currentDateTime->setTimezone($indonesiaTimeZone);
     
+    // Format the date and time string
     $currentDateTimeString = $currentDateTime->format("Y-m-d H:i:s");
     
     $disableForeignKeyChecksQuery = "SET foreign_key_checks = 0";

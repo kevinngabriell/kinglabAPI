@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $month = $_GET['month'];
     $year = $_GET['year'];
 
-    $query = "SELECT date, time FROM absence_log WHERE employee_id = '$employee_id' AND MONTH(date) = '$month' AND YEAR(date) = '$year';";
+    $query = "SELECT date, time, absence_type_name FROM absence_log A1 JOIN absence_type A2 ON A2.id_absence_type = A1.absence_type WHERE employee_id = '$employee_id' AND MONTH(date) = '$month' AND YEAR(date) = '$year';";
     $result = $connect->query($query);
 
     if($result->num_rows > 0){

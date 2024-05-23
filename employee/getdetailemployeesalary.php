@@ -6,11 +6,12 @@ header("Access-Control-Allow-Headers: Content-Type");
 require_once('../../connection/connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $employeeId = $_POST['employee_id'];
+    $employeeId = $_GET['employee_id'];
 
-    $query = "SELECT A1.employee_id, A2.department_name
+    $query = "SELECT A1.employee_id, A2.department_name, A1.employee_name, A3.position_name
     FROM employee A1
     JOIN department A2 ON A1.department_id = A2.department_id
+    JOIN position_db A3 ON A1.position_id = A3.position_id
     WHERE A1.id = '$employeeId';";
 
     $result = $connect->query($query);

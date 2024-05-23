@@ -7,7 +7,7 @@ require_once('../../connection/connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    $query = "SELECT A2.salary_category_name
+    $query = "SELECT A2.salary_category_name, A2.id_salary_category, A1.id_salary_type
     FROM salary_type A1
     LEFT JOIN salary_category A2 ON A1.id_salary_type = A2.salary_type
     WHERE A1.id_salary_type = 'SALARY-TYPE-001';";

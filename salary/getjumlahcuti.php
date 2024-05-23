@@ -5,14 +5,19 @@ header("Access-Control-Allow-Headers: Content-Type");
 
 require_once('../../connection/connection.php');
 
+//Display error message
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $employeeId = $_GET['employee_id'];
     $startDate = $_GET['startDate'];
     $endDate = $_GET['endDate'];
 
-    $query = "SELECT COUNT(A1.id_permission) as jumlah_cuti
+    $query = "SELECT SUM(DATEDIFF(A1.end_date, A1.start_date) + 1) as jumlah_cuti
     FROM permission_log A1
-    WHERE A1.start_date BETWEEN '$startDate' AND '$endDate' OR A1.end_date BETWEEN '$startDate' AND '$endDate'
+    WHERE A1.start_date BETWEEN '$startDate' AND '$endDate'
       AND A1.permission_type = 'PER-TYPE-003'
       AND A1.last_permission_status = 'PER-STATUS-003'
       AND A1.employee_id = '$employeeId';";

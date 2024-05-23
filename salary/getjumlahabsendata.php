@@ -7,13 +7,12 @@ require_once('../../connection/connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $employeeId = $_GET['employee_id'];
-    $month = $_GET['month'];
-    $year = $_GET['year'];
+    $startDate = $_GET['startDate'];
+    $endDate = $_GET['endDate'];
 
     $query = "SELECT COUNT(DISTINCT absence_log.date) AS total_absence
     FROM absence_log
-    WHERE YEAR(absence_log.date) = $year
-      AND MONTH(absence_log.date) = $month
+    WHERE absence_log.date BETWEEN '$startDate' AND '$endDate'
       AND absence_log.employee_id = '$employeeId';";
 
     $result = $connect->query($query);

@@ -8,31 +8,7 @@ require_once('../../connection/connection.php');
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $employee_id = $_GET['employee_id'];
 
-    $query = "SELECT
-        employee_id,
-        leave_count,
-        leave_year
-    FROM (
-        SELECT
-            employee_id,
-            YEAR(year) AS leave_year,
-            leave_count
-        FROM
-            annual_leave
-        WHERE
-            employee_id = '$employee_id'
-            AND (
-                YEAR(year) = YEAR(CURDATE()) - 1 -- Last year
-                OR YEAR(year) = YEAR(CURDATE()) -- This year
-                OR YEAR(year) = YEAR(CURDATE()) + 1 -- Next year
-                OR YEAR(year) = YEAR(CURDATE()) + 2 -- Next next year
-            )
-    ) AS subquery
-    GROUP BY
-        employee_id,
-        leave_year
-    ORDER BY
-        leave_year;";
+    $query = "SELECT employee_id, expired_date, leave_count FROM annual_leave WHERE employee_id = '$employee_id';";
     $result = $connect->query($query);
 
     if($result->num_rows > 0){

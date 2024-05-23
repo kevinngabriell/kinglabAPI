@@ -6,18 +6,18 @@ header("Access-Control-Allow-Headers: Content-Type");
 require_once('../../connection/connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $id_applicant = $_GET['id_applicant'];
+    $employeeId = $_GET['employee_id'];
 
-    $query = "SELECT interview_date, interview_time, interview_location
-    FROM job_applicant
-    WHERE id_applicant = '$id_applicant';";
+    $query = "SELECT SUM(loan_amount) as total FROM loan WHERE employee_id = '$employeeId' AND is_paid = 0;";
+
     $result = $connect->query($query);
 
     if($result->num_rows > 0){
-        $jatahCuti = array();
+
+        $jumlahCuti = array();
 
         while($row = $result->fetch_assoc()){
-            $jatahCuti[] = $row;
+            $jumlahCuti[] = $row;
         }
 
         http_response_code(200);
@@ -25,9 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             array(
                 'StatusCode' => 200,
                 'Status' => 'Success',
-                'Data' => $jatahCuti
+                'Data' => $jumlahCuti
             )
         );
+
     } else{
         http_response_code(400);
         echo json_encode(
@@ -38,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             )
         );
     }
+
 } else {
     http_response_code(404);
     echo json_encode(

@@ -8,12 +8,12 @@ require_once('../../connection/connection.php');
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $id = $_GET['id'];
 
-    $query = "SELECT A1.id_permission, A2.permission_type_name, A3.employee_name ,A1.permission_date, A4.permission_status_name, A1.start_cuti
+    $query = "SELECT A1.id_permission, A2.permission_type_name, A3.employee_name ,A1.permission_date, A4.permission_status_name, A1.start_date
     FROM permission_log A1
     JOIN permission_type_master A2 ON A1.permission_type = A2.id_permission_type
     JOIN employee A3 ON A1.employee_id = A3.id
     JOIN permission_status_master A4 ON A1.last_permission_status = A4.id_permission_status
-    WHERE A1.employee_id = '$id' ORDER BY A1.id_permission DESC;";
+    WHERE A1.employee_id = '$id' ORDER BY A1.created_dt DESC;";
     $result = mysqli_query($connect, $query);
 
     if (mysqli_num_rows($result) > 0) {

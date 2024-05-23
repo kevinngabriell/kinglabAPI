@@ -8,11 +8,12 @@ require_once('../../connection/connection.php');
 function fetchData($employeeId) {
     global $connect;
 
-    $stmt = $connect->prepare("SELECT A2.company_name, A2.company_address, LEFT(A1.employee_name, 15) AS employee_name, A3.employee_email, A4.position_name
+    $stmt = $connect->prepare("SELECT A2.company_name, A2.company_address, LEFT(A1.employee_name, 15) AS employee_name, A3.employee_email, A4.position_name, A5.department_name, A1.employee_id
         FROM employee A1
         JOIN company A2 ON A1.company_id = A2.company_id
-        JOIN employee_contact_details_db A3 ON A1.id = A3.id
+        LEFT JOIN employee_contact_details_db A3 ON A1.id = A3.id
         JOIN position_db A4 ON A1.position_id = A4.position_id
+        JOIN department A5 ON A1.department_id = A5.department_id
         WHERE A1.id = ?");
     $stmt->bind_param("s", $employeeId);
     $stmt->execute();

@@ -7,7 +7,12 @@ require_once('../../connection/connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $request_id = $_POST["request_id"];
+    $job_title = $_POST['job_title'];
+    $job_desc = $_POST['job_desc'];
+    $criteria = $_POST['criteria'];
     $employee_id = $_POST['employee_id'];
+    $hiring_status = 'HIRING001';
+    $location = 'Tangerang, Indonesia';
 
     $currentDateTime = new DateTime();
     
@@ -19,12 +24,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $disableForeignKeyChecksQuery = "SET foreign_key_checks = 0";
     mysqli_query($connect, $disableForeignKeyChecksQuery);
 
-    $update_log_query = "UPDATE new_employee_request SET last_status = 'NEW-STATUS-002', updated_by = '$employee_id', updated_dt = '$currentDateTimeString' WHERE id_new_employee_request = '$request_id';";
-    $insert_history_query = "INSERT IGNORE INTO new_employee_request_log 
-        (id, new_request_id, action, action_by, action_dt) VALUES 
-        (NULL, '$request_id', 'Permintaan karyawan baru anda telah disetujui oleh HRD', '$employee_id', '$currentDateTimeString');";
+    $insert_history_query = "INSERT INTO job_ads 
+        (id_job_ads, request_id, position_name, job_desc, criteria, hiring_status, location, insert_by, insert_dt) VALUES 
+        (UUID(), '$request_id', '$job_title', '$job_desc', '$criteria', '$hiring_status', '$location','$employee_id', '$currentDateTimeString');";
 
-    if (mysqli_query($connect, $update_log_query) && mysqli_query($connect, $insert_history_query)) {
+    $update_log_query = "UPDATE new_employee_request SET last_status = 'NEW-STATUS-003', updated_by = '$employee_id', updated_dt = '$currentDateTimeString' WHERE id_new_employee_request = '$request_id';";
+
+    $history_query = "INSERT INTO new_employee_request_log 
+        (id, new_request_id, action, action_by, action_dt) VALUES 
+        (NULL, '$request_id', 'Lowongan pekerjaan telah dibuka', '$employee_id', '$currentDateTimeString');";
+
+    if (mysqli_query($connect, $insert_history_query) && mysqli_query($connect, $update_log_query) && mysqli_query($connect, $history_query)) {
         http_response_code(200);
         echo json_encode(
             array(
